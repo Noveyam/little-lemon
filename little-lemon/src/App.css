@@ -1,38 +1,162 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.app-grid-container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.navbar {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  grid-row: 1 / 2;
+  max-height: 76px;
 }
 
-.App-link {
-  color: #61dafb;
+.logo {
+  max-width: 202px;
+  max-height: 80px;
+  margin-right: 50px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.hamburger {
+  display: none;
+}
+
+.navigation {
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.navigation > li {
+  margin-right: 50px;
+}
+
+.navigation > li > a{
+  text-decoration: none;
+  font-family: "Markazi Text", "Serif";
+  font-weight: 700;
+  color: #000000;
+}
+
+.main-content {
+  background-color: #495e57;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  background-color: #495e57;
+  margin: auto 20%;
+}
+
+.main-item {
+  padding: 10px;
+}
+
+.header {
+  grid-column: 1 / span 2;
+}
+
+.content {
+  grid-column: 1 / span 1;
+}
+
+.image > img {
+  position: absolute;
+  width: 175px;
+  max-height: 175px;
+  top: 11%;
+  margin-left: 30px;
+  grid-column: 2 / span 1;
+  border-radius: 16px;
+  object-position: 30%;
+}
+
+.header > h1 {
+  font-family: "Markazi Text", "Serif";
+  font-weight: 500;
+  font-size: 64px;
+  color: #F4CE14;
+}
+
+.header > h4 {
+  color: #FFFFFF;
+  font-weight: 400px;
+  font-size: 40px;
+  font-family: "Markazi Text", "Serif";
+}
+
+.main-item > p {
+  font-family: "Karla", "sans-serif";
+  font-weight: 400px;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+button {
+  background-color: #F4CE14;
+  height: 60px;
+  width: 200px;
+  border-radius: 16px;
+  margin: 50px 5px 5px 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+  body {
+    width: 100%;
   }
-  to {
-    transform: rotate(360deg);
+
+  .app-grid-container {
+    grid-template-rows: auto;
+    margin: 0px 10px;
+  }
+
+  .navigation li {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    max-width: 50px;
+    max-height: 50px;
   }
 }
