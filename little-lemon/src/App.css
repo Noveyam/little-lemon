@@ -131,7 +131,7 @@ h2 {
 }
 
 .food-item {
-  max-width: 200px;
+  max-width: 205px;
   background-color: #EDEFEE;
   margin: 0 auto;
 }
@@ -156,6 +156,11 @@ h3 {
   font-weight: 700;
   font-size: 18px;
 }
+
+h6 + p {
+  height: 130px;
+}
+
 
 h6 {
   float: right;
