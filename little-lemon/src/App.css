@@ -4,27 +4,34 @@
 }
 
 body {
-  margin: auto;
+  margin: 0 auto;
+  width: 60%;
 }
 
 .app-grid-container {
   display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr;
+  height: 150vh;
+  grid-template-rows: auto 1fr auto;
 }
 
-.navbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-row: 1 / 2;
-  max-height: 76px;
+.footer-grid-container {
+  background-color: pink;
+}
+
+.highlights-grid-container {
+  background-color: red;
+}
+
+.navbar, .main-content, .footer-content{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  justify-content: space-between;
 }
 
 .logo {
-  max-width: 202px;
-  max-height: 80px;
-  margin-right: 50px;
+  grid-column: 1/2;
+  width: 200px;
 }
 
 .hamburger {
@@ -32,16 +39,12 @@ body {
 }
 
 .navigation {
-    display: flex;
-    justify-content: flex-end;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
-
-.navigation > li {
-  margin-right: 50px;
+  grid-column: 3/ span 12;
+  display: flex;
+  list-style-type: none;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px;
 }
 
 .navigation > li > a{
@@ -51,60 +54,13 @@ body {
   color: #000000;
 }
 
-.main-content {
-  background-color: #495e57;
-}
 
 .main-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
+  grid-column: 1/ span 6;
+  margin: 20px;
   background-color: #495e57;
-  margin: auto 20%;
-}
-
-.main-item {
-  padding: 10px;
-}
-
-.header {
-  grid-column: 1 / span 2;
-}
-
-.content {
-  grid-column: 1 / span 1;
-}
-
-.image > img {
-  position: absolute;
-  width: 175px;
-  max-height: 175px;
-  top: 11%;
-  margin-left: 30px;
-  grid-column: 2 / span 1;
-  border-radius: 16px;
-  object-position: 30%;
-}
-
-.header > h1 {
-  font-family: "Markazi Text", "Serif";
-  font-weight: 500;
-  font-size: 64px;
-  color: #F4CE14;
-}
-
-.header > h4 {
-  color: #FFFFFF;
-  font-weight: 400px;
-  font-size: 40px;
-  font-family: "Markazi Text", "Serif";
-}
-
-.main-item > p {
-  font-family: "Karla", "sans-serif";
-  font-weight: 400px;
-  font-size: 20px;
-  color: #FFFFFF;
+  margin: 0 -500%;
+  padding: 0 500% !important;
 }
 
 button {
@@ -112,23 +68,124 @@ button {
   height: 60px;
   width: 200px;
   border-radius: 16px;
-  margin: 50px 5px 5px 0px;
+  border-style: none;
+  font-family: "Markazi Text", "Serif";
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.bread {
+  grid-column: 7/ span 12;
+}
+
+.bread > img {
+  width: 200px;
+  margin: 30px;
+  border-radius: 16px;
+  float: right;
+}
+
+h1 {
+  font-family: "Markazi Text", "Serif";
+  font-weight: 500;
+  font-size: 64px;
+  color: #F4CE14;
+}
+
+h4 {
+  color: #FFFFFF;
+  font-weight: 400;
+  font-size: 40px;
+  font-family: "Markazi Text", "Serif";
+}
+
+.main-container > p {
+  font-family: "Karla", "sans-serif";
+  font-weight: 400;
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+.main-container > button {
+  margin-top: 70px
 }
 
 
+.highlights {
+  background-color: #FFFFFF;
+  grid-column: 1/ span 12;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
 
 
+h2 {
+  font-family: "Karla", "sans-serif";
+  font-weight: 800;
+  font-size: 40px;
+}
+
+.food {
+  background-color: #ffffff;
+  grid-column: 1/ span 12;
+}
+
+.food-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.food-item {
+  max-width: 200px;
+  background-color: #EDEFEE;
+  margin: 0 auto;
+}
+
+.food-item > h3, h6, p, h5 {
+  padding: 10px;
+}
+
+.food-item, img {
+  width: 100%;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+}
+
+h3, h6, h5, .cart-icon {
+  display: inline-flex;
+}
+
+h3 {
+  color: #000000;
+  font-family: "Karla", "sans-serif";
+  font-weight: 700;
+  font-size: 18px;
+}
+
+h6 {
+  float: right;
+  font-family: "Karla", "sans-serif";
+  font-weight: 700;
+  font-size: 16px;
+  color: #EE9972;
+}
+
+.food-item > p {
+  font-family: "Karla", "sans-serif";
+  font-weight: 400;
+  font-size: 16px;
+  color:#495e57;
+}
 
 
-
-
-
-
-
-
-
-
-
+.cart-icon {
+  width: 16px;
+  position: absolute;
+  padding-top: 11px;
+}
 
 
 

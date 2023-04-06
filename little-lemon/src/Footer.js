@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
     return (
-        <footer className="footer-grid-item">
+        <footer className="footer-content">
             <div class="column">
             </div>
             <div class="column">
