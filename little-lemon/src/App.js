@@ -14,10 +14,9 @@ function App() {
       <div className="main-grid-container">
         <Main />
       </div>
-      {/*
       <div className="footer-grid-container">
         <Footer />
-  </div>*/}
+    </div>
     </div>
   );
 }

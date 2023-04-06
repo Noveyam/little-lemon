@@ -14,14 +14,6 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
-.footer-grid-container {
-  background-color: pink;
-}
-
-.highlights-grid-container {
-  background-color: red;
-}
-
 .navbar, .main-content, .footer-content{
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -187,12 +179,30 @@ h6 {
   padding-top: 11px;
 }
 
+.footer-container {
+  grid-column: 1/ span 12;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 100px;
+}
 
+.footer-container ul{
+  list-style-type: none;
+}
 
+.footer-container a {
+  text-decoration: none;
+  color: #000000;
+}
 
+.footer-container li {
+  margin: 10px 0px;
+}
 
-
-
+.footer-container > figure {
+  width: 100px;
+}
 
 
 
@@ -207,13 +217,31 @@ h6 {
     margin: 0px 10px;
   }
 
+  .navbar {
+    display: flex;
+  }
+
   .navigation li {
     display: none;
+  }
+
+  .main-container > button {
+    margin-bottom: 20px;
   }
 
   .hamburger {
     display: block;
     max-width: 50px;
     max-height: 50px;
+    margin: 20px;
+  }
+
+  .food-container {
+    display: block;
+  }
+
+  .food-item {
+    margin: 20px auto;
+    max-width: 100%;
   }
 }

@@ -3,9 +3,11 @@ import React from "react";
 function Footer() {
     return (
         <footer className="footer-content">
-            <div class="column">
-            </div>
-            <div class="column">
+            <div className="footer-container">
+            <figure className="footer-column">
+                <img src="./images/footer-logo.jpg" alt="logo"></img>
+            </figure>
+            <div className="footer-column">
                 <h3>Doormat Navigation</h3>
                 <ul>
                     <li><a href="#">Home</a></li>
@@ -16,7 +18,7 @@ function Footer() {
                     <li><a href="#">Logins</a></li>
                 </ul>
             </div>
-            <div class="column">
+            <div className="footer-column">
                 <h3>Contact</h3>
                 <ul>
                     <li>Address</li>
@@ -24,13 +26,14 @@ function Footer() {
                     <li>Email</li>
                 </ul>
             </div>
-            <div class="column">
+            <div className="footer-column">
                 <h3>Social Media Links</h3>
                 <ul>
                     <li><a href="#">Facebook</a></li>
                     <li><a href="#">Youtube</a></li>
                     <li><a href="#">Twitter</a></li>
                 </ul>
+            </div>
             </div>
         </footer>
     )
