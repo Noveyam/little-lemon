@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 
 function Footer() {
     return (
@@ -10,12 +11,12 @@ function Footer() {
             <div className="footer-column">
                 <h3>Doormat Navigation</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Menu</a></li>
-                    <li><a href="#">Reservations</a></li>
-                    <li><a href="#">Order Online</a></li>
-                    <li><a href="#">Logins</a></li>
+                    <li><Link href="/">Home</Link></li>
+                    <li><Link href="/about">About</Link></li>
+                    <li><Link href="/menu">Menu</Link></li>
+                    <li><Link href="/reservations">Reservations</Link></li>
+                    <li><Link href="/order">Order Online</Link></li>
+                    <li><Link href="/login">Login</Link></li>
                 </ul>
             </div>
             <div className="footer-column">
@@ -29,9 +30,9 @@ function Footer() {
             <div className="footer-column">
                 <h3>Social Media Links</h3>
                 <ul>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Youtube</a></li>
-                    <li><a href="#">Twitter</a></li>
+                    <li><a href="http://www.facebook.com">Facebook</a></li>
+                    <li><a href="http://www.youtube.com">Youtube</a></li>
+                    <li><a href="http://www.twitter.com">Twitter</a></li>
                 </ul>
             </div>
             </div>
