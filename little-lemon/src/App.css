@@ -46,7 +46,6 @@ body {
   color: #000000;
 }
 
-
 .main-container {
   grid-column: 1/ span 6;
   margin: 20px;
@@ -65,6 +64,7 @@ button {
   font-weight: 700;
   font-size: 18px;
 }
+
 
 .bread {
   grid-column: 7/ span 12;
@@ -99,7 +99,7 @@ h4 {
 }
 
 .main-container > button {
-  margin-top: 70px
+  margin: 30px 0px 10px 0px;
 }
 
 
@@ -128,6 +128,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 50px;
 }
 
 .food-item {
@@ -209,6 +210,54 @@ h6 {
   width: 100px;
 }
 
+.people {
+  background-color: #EDEFEE;
+  grid-column: 1/ span 12;
+  margin: 0 -500%;
+  padding: 0 500% !important;
+}
+
+.people > h1 {
+  text-align: center;
+}
+
+.people-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-bottom: 50px;
+}
+
+.people-grid {
+  background-color: #FFFFFF;
+  max-width: 150px;
+  max-height: 300px;
+  overflow: hidden;
+  margin: 10px;
+  text-align: center;
+}
+
+.people-grid > figure > img {
+  border-radius: 16px;
+}
+
+.story {
+  display: grid;
+  grid-column: 1/ span 6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @media only screen and (max-width: 768px) {
@@ -250,3 +299,4 @@ h6 {
     max-width: 100%;
   }
 }
+
