@@ -1,8 +1,10 @@
 import './App.css';
 import Home from './Pages/Home.js';
-import Main from './Pages/Main.js';
 import Specials from './Pages/Specials';
 import CustomerReviews from './Pages/CustomerReviews';
+import Chicago from './Pages/Chicago.js';
+import Bookings from './Pages/Booking.js';
+import User from './Pages/Login.js';
 import Footer from './Pages/Footer.js';
 import {Routes, Route, Link} from 'react-router-dom';
 
@@ -26,12 +28,13 @@ function App() {
     </nav>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/about" element={<Main />} />
+      <Route path="/about" element={<Chicago />} />
       <Route path="/menu" element={<Specials />}/>
-      <Route path="/reservations" element={<Specials />} />
+      <Route path="/reservations" element={<Bookings />} />
       <Route path="/order" element={<CustomerReviews />} />
-      <Route path="/login" element={<Footer />} />
+      <Route path="/login" element={<User />} />
     </Routes>
+    <Footer />
     </>
     );
 }

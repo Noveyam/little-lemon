@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 
 function Main() {
     return (
@@ -7,7 +8,7 @@ function Main() {
                 <h1>Little Lemon</h1>
                 <h4>Chicago</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <button className="reserve-button">Reserve a Table</button>
+                <Link to="/reservations"><button className="reserve-button">Reserve a Table</button></Link>
             </section>
                 <figure className="bread">
                     <img src="./images/restauranfood.jpg" alt="bread on plate"></img>

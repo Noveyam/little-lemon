@@ -246,7 +246,12 @@ h6 {
   grid-column: 1/ span 6;
 }
 
-
+.reserve-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
 
 
