@@ -63,6 +63,12 @@ button {
   font-family: "Markazi Text", "Serif";
   font-weight: 700;
   font-size: 18px;
+  transition: 0.4s;
+}
+
+button:hover {
+  background-color: #EFEFEE;
+  color: #333333;
 }
 
 
@@ -246,11 +252,14 @@ h6 {
   grid-column: 1/ span 6;
 }
 
-.reserve-container {
-  display: flex;
+.reserve-form {
+  display: grid;
   justify-content: center;
   align-items: center;
   text-align: center;
+  max-width: 200px;
+  gap: 20px;
+  margin: 0 auto;
 }
 
 
