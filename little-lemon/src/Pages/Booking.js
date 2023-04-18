@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 
-const ReservationForm = () => {
+const ReservationForm = ({availableTimes, setAvailableTimes}) => {
   const [resDate, setResDate] = useState(new Date().toISOString().substr(0, 10));
   const [resTime, setResTime] = useState('17:00');
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
-  const [availableTimes] = useState([
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',
-  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
