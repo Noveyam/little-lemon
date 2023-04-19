@@ -3,7 +3,7 @@ import Home from './Pages/Home.js';
 import Specials from './Pages/Specials';
 import CustomerReviews from './Pages/CustomerReviews';
 import Chicago from './Pages/Chicago.js';
-import ReservationForm from './Pages/Booking.js';
+import ReservationForm from './Pages/ReservationForm';
 import User from './Pages/Login.js';
 import Footer from './Pages/Footer.js';
 import {Routes, Route, Link} from 'react-router-dom';
