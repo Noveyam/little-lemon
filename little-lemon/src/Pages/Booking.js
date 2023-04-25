@@ -1,44 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 
-const ReservationForm = ({availableTimes, setAvailableTimes}) => {
-  const [resDate, setResDate] = useState(new Date().toISOString().substr(0, 10));
-  const [resTime, setResTime] = useState('17:00');
+const BookingForm = ({ availableTimes, setAvailableTimes }) => {
+  const [resDate, setResDate] = useState(new Date().toISOString().substring(0, 10));
+  const [resTime, setResTime] = useState(
+    availableTimes && availableTimes.length > 0 ? availableTimes[0] : '17:00'
+  );
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
 
+  const initializeTimes = (times) => {
+    return times;
+  };
+
+  const updateTimes = (state, action) => {
+    switch (action.type) {
+      case 'UPDATE_TIMES':
+        return action.payload;
+      default:
+        return state;
+    }
+  };
+
+  const [availableTimesState, dispatch] = useReducer(
+    updateTimes,
+    availableTimes,
+    initializeTimes
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      date: resDate,
-      time: resTime,
-      guests,
-      occasion,
-    };
-    console.log(formData);
-    setResDate(new Date().toISOString().substr(0, 10));
-    setResTime(availableTimes[0]);
-    setGuests(1);
-    setOccasion('Birthday');
+    console.log(updateTimes)
+  };
+
+  const handleDateChange = (e) => {
+    setResDate(e.target.value);
+    dispatch({ type: 'UPDATE_TIMES', payload: ['18:00', '19:00', '20:00', '21:00'] });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="reserve-form">
-      <label htmlFor="res-date">Choose date</label>
+    <form className="reserve-form" onSubmit={handleSubmit}>
+      <label htmlFor="date">Choose Date</label>
       <input
         type="date"
-        id="res-date"
+        id="date"
         value={resDate}
-        onChange={(e) => setResDate(e.target.value)}
+        onChange={handleDateChange}
       />
-      <label htmlFor="res-time">Choose time</label>
+      <label htmlFor="time">Choose Time</label>
       <select
-        id="res-time"
+        type="time"
+        id="time"
         value={resTime}
         onChange={(e) => setResTime(e.target.value)}
       >
-        {availableTimes.map((time) => (
-          <option key={time}>{time}</option>
-        ))}
+        {availableTimesState &&
+          availableTimesState.map((time) => <option key={time}>{time}</option>)}
       </select>
       <label htmlFor="guests">Number of guests</label>
       <input
@@ -64,4 +80,4 @@ const ReservationForm = ({availableTimes, setAvailableTimes}) => {
   );
 };
 
-export default ReservationForm;
+export default BookingForm;
