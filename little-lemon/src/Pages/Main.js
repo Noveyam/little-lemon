@@ -13,11 +13,16 @@ function initializeTimes() {
 }
 
 function updateTimes(state, action) {
-  return initializeTimes(action.date);
+  switch (action.type) {
+    case "UPDATE_TIMES":
+      return action.payload;
+    default:
+      return state;
+  }
 }
 
 function Main() {
-  const [availableTimes, dispatch] = useReducer(updateTimes, null, initializeTimes);
+  const [availableTimes, dispatch] = useReducer(updateTimes, initializeTimes());
 
   return (
     <main className="main-content">
@@ -30,7 +35,7 @@ function Main() {
         </p>
         <BookingForm
           availableTimes={availableTimes}
-          dispatch={dispatch}
+          setAvailableTimes={dispatch}
         />
         <Link to="/reservations">
           <button className="reserve-button">Reserve a Table</button>

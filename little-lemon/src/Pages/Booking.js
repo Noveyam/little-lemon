@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 
 const BookingForm = ({ availableTimes, setAvailableTimes }) => {
   const [resDate, setResDate] = useState(new Date().toISOString().substring(0, 10));
@@ -29,14 +29,31 @@ const BookingForm = ({ availableTimes, setAvailableTimes }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(updateTimes)
+    console.log("Reservation date: ", resDate);
+    console.log("Reservation time: ", resTime);
+    console.log("Number of guests: ", guests);
+    console.log("Occasion: ", occasion);
   };
 
   const handleDateChange = (e) => {
-    setResDate(e.target.value);
-    dispatch({ type: 'UPDATE_TIMES', payload: ['18:00', '19:00', '20:00', '21:00'] });
+    const newDate = e.target.value;
+    setResDate(newDate);
+    const newTimes = ["18:00", "19:00", "20:00", "21:00"]; // generate new available times based on the new date
+    if (newTimes.length === 0) {
+      // if there are no available times for the new date, reset the time to the default time
+      setResTime('17:00');
+    } else {
+      dispatch({ type: 'UPDATE_TIMES', payload: newTimes });
+      setAvailableTimes(newTimes); // update the available times with the new array of times
+      setResTime(newTimes[0]); // reset the selected time to the first available time
+    }
   };
 
+  useEffect(() => {
+    const newTimes = ["18:00", "19:00", "20:00", "21:00"]; // generate new available times based on the default date
+    setAvailableTimes(newTimes);
+    dispatch({ type: 'UPDATE_TIMES', payload: newTimes });
+  }, [setAvailableTimes]);
   return (
     <form className="reserve-form" onSubmit={handleSubmit}>
       <label htmlFor="date">Choose Date</label>
