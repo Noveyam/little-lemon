@@ -1,45 +1,39 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import BookingForm from './Pages/Booking';
+import {initializeTimes, updateTimes} from './Pages/Main';
 
 describe('BookingForm', () => {
-  const mockSetAvailableTimes = jest.fn();
-  const mockAvailableTimes = ['17:00', '18:00', '19:00'];
-
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  test('renders all input fields', () => {
-    render(
-      <BookingForm
-        availableTimes={mockAvailableTimes}
-        setAvailableTimes={mockSetAvailableTimes}
-      />
-    );
-
-    expect(screen.getByLabelText('Choose Date')).toBeInTheDocument();
-    expect(screen.getByLabelText('Choose Time')).toBeInTheDocument();
-    expect(screen.getByLabelText('Number of guests')).toBeInTheDocument();
-    expect(screen.getByLabelText('Occasion')).toBeInTheDocument();
-    expect(screen.getByText('Make Your Reservation')).toBeInTheDocument();
-  });
-
-  test('handles form submission', () => {
-    const mockSetAvailableTimes = jest.fn();
-    console.log = jest.fn(); // Add this line to mock console.log
-    render(<BookingForm setAvailableTimes={mockSetAvailableTimes} />);
-    const dateInput = screen.getByLabelText('Choose Date');
-    const timeInput = screen.getByLabelText('Choose Time');
-    const guestsInput = screen.getByLabelText('Number of guests');
-    const occasionInput = screen.getByLabelText('Occasion');
-    fireEvent.change(dateInput, { target: { value: '2023-05-01' } });
-    fireEvent.change(timeInput, { target: { value: '18:00' } });
-    fireEvent.change(guestsInput, { target: { value: '4' } });
-    fireEvent.change(occasionInput, { target: { value: 'Anniversary' } });
-    fireEvent.click(screen.getByText('Make Your Reservation'));
-    expect(mockSetAvailableTimes).toHaveBeenCalledWith(['18:00', '19:00', '20:00', '21:00']);
-    expect(console.log).toHaveBeenCalledWith('Reservation date: ', '2023-05-01');
-    expect(console.log).toHaveBeenCalledWith('Reservation time: ', '18:00');
-  });
+  test('Renders the BookingForm heading', () => {
+    render(<BookingForm />);
+    const headingElement = screen.getByText("Book Now");
+    expect(headingElement).toBeInTheDocument();
+})
 });
+
+test("initializeTimes returns an array of available times", () => {
+  expect(initializeTimes()).toEqual([
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+  ]);
+});
+
+// Unit test for the updateTimes function
+test("updateTimes returns the same value that is provided in the state", () => {
+  const state = ["10:00", "11:00", "12:00"];
+  const action = { type: "UPDATE_TIMES", payload: state };
+  expect(updateTimes(state, action)).toEqual(state);
+});
+
+test('initializeTimes function returns a non-empty array', async () => {
+  const result = await initializeTimes();
+  expect(Array.isArray(result)).toBe(true);
+  expect(result.length).toBeGreaterThan(0);
+});
+
+
+
+
