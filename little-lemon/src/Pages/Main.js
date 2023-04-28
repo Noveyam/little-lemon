@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BookingForm from "./Booking";
-import ConfirmedBooking from "./ConfirmedBooking";
 
 function initializeTimes() {
   return [
@@ -61,7 +60,6 @@ function Main() {
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
         <BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm}/>
-        <ConfirmedBooking />
         <Link to="/reservations">
           <button className="reserve-button">Reserve a Table</button>
         </Link>

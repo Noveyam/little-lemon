@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from 'react';
+import {Link} from 'react-router-dom';
 
 const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
   const [resDate, setResDate] = useState(new Date().toISOString().substring(0, 10));
@@ -7,6 +8,9 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
   );
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('Birthday');
+
+  const [isDateValid, setIsDateValid] = useState(true);
+  const [isGuestsValid, setIsGuestsValid] = useState(true);
 
   const fetchData = async (date) => {
     try {
@@ -55,8 +59,12 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
     event.preventDefault();
     try {
       const formData = {
-        // ...
+        date: resDate,
+        time: resTime,
+        guests: guests,
+        occasion: occasion,
       };
+
       await submitForm(formData);
     } catch (error) {
       console.log(error);
@@ -66,10 +74,19 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
   const handleDateChange = async (e) => {
     const newDate = e.target.value;
     setResDate(newDate);
+    setIsDateValid(e.target.checkValidity());
     const times = await fetchData(newDate);
     setAvailableTimesState(times);
     setResTime(times && times.length > 0 ? times[0] : "17:00");
   };
+
+  const handleGuestsChange = (e) => {
+    const value = parseInt(e.target.value);
+    setGuests(value);
+    setIsGuestsValid(value >= 1 && value <= 10);
+  };
+
+  const isFormValid = isDateValid && isGuestsValid;
 
   return (
     <form className="reserve-form" onSubmit={handleSubmit}>
@@ -80,7 +97,12 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         id="date"
         value={resDate}
         onChange={handleDateChange}
+        required
       />
+      {!isDateValid && (
+        <p className="error">Please choose a valid date</p>
+      )}
+
       <label htmlFor="time">Choose Time</label>
       <select
         type="time"
@@ -88,8 +110,17 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         value={resTime}
         onChange={(e) => setResTime(e.target.value)}
       >
-        {Array.isArray(availableTimesState) &&
-          availableTimesState.map((time) => <option key={time}>{time}</option>)}
+        {availableTimesState.length > 0
+    ? availableTimesState.map((time) => (
+        <option key={time} value={time}>
+          {time}
+        </option>
+      ))
+    : ["17:00", "18:00", "19:00", "20:00", "21:00"].map((time) => (
+        <option key={time} value={time}>
+          {time}
+        </option>
+      ))}
       </select>
       <label htmlFor="guests">Number of guests</label>
       <input
@@ -99,8 +130,12 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         max="10"
         id="guests"
         value={guests}
-        onChange={(e) => setGuests(parseInt(e.target.value))}
+        onChange={handleGuestsChange}
+        required
       />
+      {!isGuestsValid && (
+        <span className="error">Number of guests should be between 1 and 10</span>
+      )}
       <label htmlFor="occasion">Occasion</label>
       <select
         id="occasion"
@@ -110,7 +145,9 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         <option>Birthday</option>
         <option>Anniversary</option>
       </select>
-      <input type="submit" value="Make Your Reservation" />
+      <Link to="/confirmbooking">
+      <button disabled={!isFormValid} type="submit">Make Your Reservation</button>
+      </Link>
     </form>
   );
 };

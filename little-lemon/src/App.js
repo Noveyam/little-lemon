@@ -6,6 +6,7 @@ import Chicago from './Pages/Chicago.js';
 import BookingForm from './Pages/Booking';
 import User from './Pages/Login.js';
 import Footer from './Pages/Footer.js';
+import ConfirmedBooking from './Pages/ConfirmedBooking';
 import {Routes, Route, Link} from 'react-router-dom';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <Route path="/menu" element={<Specials />}/>
       <Route path="/reservations" element={<BookingForm />} />
       <Route path="/order" element={<CustomerReviews />} />
+      <Route path="/confirmbooking" element={<ConfirmedBooking />}/>
       <Route path="/login" element={<User />} />
     </Routes>
     <Footer />
