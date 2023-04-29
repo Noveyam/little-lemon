@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BookingForm from "./Booking";
 
 function initializeTimes() {
@@ -60,9 +60,6 @@ function Main() {
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
         <BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm}/>
-        <Link to="/reservations">
-          <button className="reserve-button">Reserve a Table</button>
-        </Link>
       </section>
       <figure className="bread">
         <img src="./images/restauranfood.jpg" alt="bread on plate"></img>
