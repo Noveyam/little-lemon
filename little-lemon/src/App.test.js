@@ -5,6 +5,51 @@ import {initializeTimes, updateTimes} from './Pages/Main';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('BookingForm', () => {
+
+  const availableTimes = ['17:00', '18:00', '19:00', '20:00'];
+  const setAvailableTimes = jest.fn();
+  const submitForm = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should render the form fields', () => {
+    render(<BrowserRouter><BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm} /></BrowserRouter>);
+    expect(screen.getByLabelText('Choose Date')).toBeInTheDocument();
+    expect(screen.getByLabelText('Choose Time')).toBeInTheDocument();
+    expect(screen.getByLabelText('Number of guests')).toBeInTheDocument();
+    expect(screen.getByLabelText('Occasion')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Make Your Reservation' })).toBeInTheDocument();
+  });
+
+  it('should show error message if date is invalid', async () => {
+    render(<BrowserRouter><BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm} /></BrowserRouter>);
+    fireEvent.change(screen.getByLabelText('Choose Date'), { target: { value: 'invalid-date' } });
+    fireEvent.submit(screen.getByRole('button', { name: 'Make Your Reservation' }));
+    expect(await screen.findByText('Please choose a valid date')).toBeInTheDocument();
+  });
+
+  it('should show error message if number of guests is invalid', async () => {
+    render(<BrowserRouter><BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm} /></BrowserRouter>);
+    fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '0' } });
+    fireEvent.submit(screen.getByRole('button', { name: 'Make Your Reservation' }));
+    expect(await screen.findByText('Number of guests should be between 1 and 10')).toBeInTheDocument();
+  });
+
+  it('should call submitForm with form data when submitted with valid data', () => {
+    render(<BrowserRouter><BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm} /></BrowserRouter>);
+    fireEvent.change(screen.getByLabelText('Choose Date'), { target: { value: '2023-05-01' } });
+    fireEvent.change(screen.getByLabelText('Number of guests'), { target: { value: '4' } });
+    fireEvent.submit(screen.getByRole('button', { name: 'Make Your Reservation' }));
+    expect(submitForm).toHaveBeenCalledWith({
+      date: '2023-05-01',
+      time: '17:00',
+      guests: 4,
+      occasion: 'Birthday',
+    });
+  });
+
   test('Renders the BookingForm heading', () => {
     render(<BrowserRouter><BookingForm /></BrowserRouter>);
     const headingElement = screen.getByText("Book Now");

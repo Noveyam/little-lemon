@@ -77,6 +77,7 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
     setIsDateValid(e.target.checkValidity());
     const times = await fetchData(newDate);
     setAvailableTimesState(times);
+    setAvailableTimes(["17:00", "18:00", "19:00", "20:00", "21:00"]);
     setResTime(times && times.length > 0 ? times[0] : "17:00");
   };
 
@@ -87,7 +88,6 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
   };
 
   const isFormValid = isDateValid && isGuestsValid;
-
   return (
     <form className="reserve-form" onSubmit={handleSubmit}>
       <h1>Book Now</h1>
@@ -146,7 +146,7 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         <option>Anniversary</option>
       </select>
       <Link to="/confirmbooking">
-      <button disabled={!isFormValid} type="submit">Make Your Reservation</button>
+      <button disabled={!isFormValid} type="submit" aria-label="Make Your Reservation">Make Your Reservation</button>
       </Link>
     </form>
   );
