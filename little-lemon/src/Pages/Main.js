@@ -59,11 +59,11 @@ function Main() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </p>
-        <BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm}/>
       </section>
       <figure className="bread">
         <img src="./images/restauranfood.jpg" alt="bread on plate"></img>
       </figure>
+      <BookingForm availableTimes={availableTimes} setAvailableTimes={setAvailableTimes} submitForm={submitForm}/>
     </main>
   );
 }

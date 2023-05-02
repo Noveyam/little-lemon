@@ -254,6 +254,7 @@ h6 {
 
 .reserve-form {
   display: grid;
+  grid-column: 1/ span 12;
   justify-content: center;
   align-items: center;
   text-align: center;

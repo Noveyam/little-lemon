@@ -98,6 +98,7 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         value={resDate}
         onChange={handleDateChange}
         required
+        aria-required="true"
       />
       {!isDateValid && (
         <p className="error">Please choose a valid date</p>
@@ -108,6 +109,8 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         type="time"
         id="time"
         value={resTime}
+        required
+        aria-required="true"
         onChange={(e) => setResTime(e.target.value)}
       >
         {availableTimesState.length > 0
@@ -132,6 +135,7 @@ const BookingForm = ({ availableTimes, setAvailableTimes, submitForm }) => {
         value={guests}
         onChange={handleGuestsChange}
         required
+        aria-required="true"
       />
       {!isGuestsValid && (
         <span className="error">Number of guests should be between 1 and 10</span>
