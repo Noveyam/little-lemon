@@ -1,65 +1,33 @@
-import './Footer.css'
 import footerLogo from '../logo_footer.png'
-
+import { Link } from 'react-router-dom'
+import { navigation } from './Nav'
 function Footer() {
   return (
     <footer className="doormat-nav">
-      <figure>
-        <img className="footer-logo" src={footerLogo} alt="logo" />
-      </figure>
-      <section>
-        <h3>Doormat Navigation</h3>
-        <ul className="doormat-links">
-          <li>
-            <a href="/home">Home</a>
-          </li>
-          <li>
-            <a href="/about">About</a>
-          </li>
-          <li>
-            <a href="/menu">Menu</a>
-          </li>
-          <li>
-            <a href="/reservations">Reservations</a>
-          </li>
-          <li>
-            <a href="/order_online">Order Online</a>
-          </li>
-          <li>
-            <a href="/login">Login</a>
-          </li>
+      <img className="footer-logo" src={footerLogo} alt="Little Lemon" />
+      <div>
+        <h2>Pull up a chair.</h2>
+        <p>Mediterranean flavors. Chicago spirit.</p>
+        <p className="footer-note">
+          A React portfolio project inspired by the Meta Front-End Developer
+          Capstone.
+        </p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <ul>
+          {navigation.map(([to, name]) => (
+            <li key={to}>
+              <Link to={to}>{name}</Link>
+            </li>
+          ))}
         </ul>
-      </section>
-      <section>
-        <h3>Contact</h3>
-        <ul className="doormat-links">
-          <li>
-            <a href="/address">Address</a>
-          </li>
-          <li>
-            <a href="/phone_number">Phone Number</a>
-          </li>
-          <li>
-            <a href="/email">Email</a>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <h3>Social Media Links</h3>
-        <ul className="doormat-links">
-          <li>
-            <a href="/address">Address</a>
-          </li>
-          <li>
-            <a href="/phone_number">Phone Number</a>
-          </li>
-          <li>
-            <a href="/email">Email</a>
-          </li>
-        </ul>
-      </section>
+      </nav>
+      <p className="footer-note">
+        Demo experience
+        <br />
+        No live reservations or payments
+      </p>
     </footer>
   )
 }
-
 export default Footer

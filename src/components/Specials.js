@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import greekSalad from '../assets/greek salad.jpg'
 import lemonDessert from '../assets/lemon dessert.jpg'
 import bruchetta from '../assets/bruchetta.svg'
-import './Specials.css'
 
 const specials = [
   {
@@ -13,11 +12,11 @@ const specials = [
       'This famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons',
   },
   {
-    name: 'Bruchetta',
+    name: 'Bruschetta',
     image: bruchetta,
     price: 5.99,
     description:
-      'Our Bruschetta is made from grilled bread that has been smeared with garlic and seasons with salt and olive oil.',
+      'Our Bruschetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil.',
   },
   {
     name: 'Lemon Dessert',
@@ -32,9 +31,9 @@ function Specials() {
   return (
     <section className="specials-section">
       <div className="specials-heading">
-        <h2>Specials</h2>
-        <Link className="nav-link" to="/menu">
-          <button>Online Menu</button>
+        <h2>This week’s favorites</h2>
+        <Link className="button" to="/menu">
+          Explore the menu ↗
         </Link>
       </div>
       <div className="specials">
@@ -50,7 +49,7 @@ function Specials() {
               </div>
               <p className="specials-description">{special.description}</p>
               <Link to={'/order_online'} className="specials-link">
-                <button>Order a delivery</button>
+                <span>Delivery information</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

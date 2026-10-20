@@ -1,198 +1,171 @@
-import './BookingForm.css'
-
 import chefs from '../assets/Mario and Adrian b.jpg'
 import restaurant from '../assets/restaurant.jpg'
 import { useState } from 'react'
+import { localDate, validateBooking } from '../booking'
 
 function BookingForm({
-  availableTimes,
-  dispatch,
-  updateFormOptions,
-  submitForm,
+  availableTimes = [],
+  dispatch = () => {},
+  submitForm = () => {},
 }) {
-  let defaultDate = new Date().toISOString().slice(0, 10)
-  const [formInputs, setFormInputs] = useState({
+  const [inputs, setInputs] = useState({
+    bookingDate: localDate(),
+    bookingTime: '',
+    diners: '',
+    occasion: 'none',
     seatingOption: 'standard',
-    occasion: 'None',
-    bookingTime: availableTimes && availableTimes[0] ? availableTimes[0] : null,
   })
-
-  const [formErrors, setFormErrors] = useState({
-    bookingDate: false,
-    bookingTime: false,
-    diners: false,
-    occasion: false,
-    seatingOption: false,
-  })
-
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value
-
-    setFormInputs({
-      ...formInputs,
-      bookingDate: e.target.value,
-    })
-
-    // Dispatch action to update available times based on selected date
-    dispatch({ type: 'UPDATE_TIMES', payload: selectedDate })
-  }
-
-  const handleInputChange = (e) => {
-    const target = e.target
-    const value = target.type === 'checkbox' ? target.checked : target.value
-    const name = target.name
-
-    setFormInputs({
-      ...formInputs,
+  const [errors, setErrors] = useState({})
+  const change = (event) => {
+    const { name, value } = event.target
+    setInputs((previous) => ({
+      ...previous,
       [name]: value,
-    })
-    updateFormOptions({ ...formInputs })
-    checkErrors()
+      ...(name === 'bookingDate' ? { bookingTime: '' } : {}),
+    }))
+    setErrors((previous) => ({ ...previous, [name]: undefined }))
+    if (name === 'bookingDate')
+      dispatch({ type: 'UPDATE_TIMES', payload: value })
   }
-
-  const checkErrors = () => {
-    setFormErrors({
-      bookingDate: formInputs.bookingDate ? false : true,
-      bookingTime: formInputs.bookingTime ? false : true,
-      diners: formInputs.diners ? false : true,
-      occasion: formInputs.occasion ? false : true,
-      seatingOption: formInputs.seatingOption ? false : true,
-    })
+  const error = (name) =>
+    errors[name] && (
+      <p id={`${name}-error`} className="error-text">
+        {errors[name]}
+      </p>
+    )
+  const accessibility = (name) => ({
+    'aria-invalid': Boolean(errors[name]),
+    'aria-describedby': errors[name] ? `${name}-error` : undefined,
+  })
+  const submit = (event) => {
+    event.preventDefault()
+    const nextErrors = validateBooking(inputs, availableTimes)
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length === 0)
+      submitForm({ ...inputs, diners: Number(inputs.diners) })
   }
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault()
-    if (formInputs.bookingDate && formInputs.occasion && formInputs.diners) {
-      submitForm(formInputs)
-    } else {
-      checkErrors()
-    }
-  }
-
   return (
-    <form id="reservation-details" aria-label="Reservation Details">
-      <section className="reservations-container">
-        <div className="booking-heading">
-          <h2>Reservation Details</h2>
-        </div>
-        <div className="reservation-section">
-          <section className="reservation-fields">
-            <div>
-              <label htmlFor="bookingDate">Date</label>
-              <input
-                min={defaultDate}
-                onChange={handleDateChange}
-                id="bookingDate"
-                name="bookingDate"
-                type="date"
-              ></input>
-              {formErrors.bookingDate && (
-                <p className="error-text">Please Select a Date</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="bookingTime">Time</label>
-              <select
-                onChange={handleInputChange}
-                id="bookingTime"
-                name="bookingTime"
-              >
-                {availableTimes &&
-                  availableTimes.map((time) => {
-                    return <option key={time}>{time}</option>
-                  })}
-              </select>
-              {formErrors.bookingTime && (
-                <p className="error-text">Please Select a Time</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="diners">Number of Diners</label>
-              <input
-                onChange={handleInputChange}
-                required={true}
-                id="diners"
-                name="diners"
-                type="number"
-                min={1}
-                max={12}
-              ></input>
-              {formErrors.diners && (
-                <p className="error-text">Please Select a number of Diners</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="occasion">Occasion</label>
-              <select onChange={handleInputChange} id="occasion">
-                <option key="none" value="none">
-                  None
+    <form
+      id="reservation-details"
+      aria-label="Reservation Details"
+      onSubmit={submit}
+      noValidate
+    >
+      <div className="reservation-section">
+        <section
+          className="reservation-fields"
+          aria-labelledby="booking-heading"
+        >
+          <h2 id="booking-heading">Reservation Details</h2>
+          <div>
+            <label htmlFor="bookingDate">Date</label>
+            <input
+              id="bookingDate"
+              name="bookingDate"
+              type="date"
+              required
+              min={localDate()}
+              value={inputs.bookingDate}
+              onChange={change}
+              {...accessibility('bookingDate')}
+            />
+            {error('bookingDate')}
+          </div>
+          <div>
+            <label htmlFor="bookingTime">Time</label>
+            <select
+              id="bookingTime"
+              name="bookingTime"
+              required
+              value={inputs.bookingTime}
+              onChange={change}
+              {...accessibility('bookingTime')}
+            >
+              <option value="">Choose a time</option>
+              {availableTimes.map((time) => (
+                <option key={time} value={time}>
+                  {time}
                 </option>
-                <option key="birthday" value="birthday">
-                  Birthday
-                </option>
-                <option key="engagement" value="engagement">
-                  Engagement
-                </option>
-                <option key="anniversary" value="anniversary">
-                  Anniversary
-                </option>
-              </select>
-              {formErrors.occasion && (
-                <p className="error-text">Please Select an Occasion</p>
-              )}
-            </div>
-            <div>
-              <h3>Seating Options</h3>
-              <label htmlFor="standard">
-                Standard
+              ))}
+            </select>
+            {availableTimes.length === 0 && (
+              <p role="status">
+                No times available. Please choose another date.
+              </p>
+            )}
+            {error('bookingTime')}
+          </div>
+          <div>
+            <label htmlFor="diners">Number of Diners</label>
+            <input
+              id="diners"
+              name="diners"
+              type="number"
+              required
+              min="1"
+              max="12"
+              step="1"
+              placeholder="1–12 guests"
+              value={inputs.diners}
+              onChange={change}
+              {...accessibility('diners')}
+            />
+            {error('diners')}
+          </div>
+          <div>
+            <label htmlFor="occasion">Occasion</label>
+            <select
+              id="occasion"
+              name="occasion"
+              value={inputs.occasion}
+              onChange={change}
+              {...accessibility('occasion')}
+            >
+              <option value="none">None</option>
+              <option value="birthday">Birthday</option>
+              <option value="engagement">Engagement</option>
+              <option value="anniversary">Anniversary</option>
+            </select>
+            {error('occasion')}
+          </div>
+          <fieldset>
+            <legend>Seating Options</legend>
+            {['standard', 'outside'].map((value) => (
+              <label className="radio-label" key={value}>
                 <input
-                  onChange={handleInputChange}
                   type="radio"
-                  checked={formInputs.seatingOption === 'standard'}
-                  id="standard"
                   name="seatingOption"
-                  value="standard"
-                  className="option-input"
-                ></input>
+                  value={value}
+                  checked={inputs.seatingOption === value}
+                  onChange={change}
+                />
+                {value === 'standard' ? 'Standard' : 'Outside'}
               </label>
-              <label htmlFor="outside">
-                Outside
-                <input
-                  onChange={handleInputChange}
-                  type="radio"
-                  checked={formInputs.seatingOption === 'outside'}
-                  id="outside"
-                  name="seatingOption"
-                  value="outside"
-                  className="option-input"
-                ></input>
-              </label>
-              {formErrors.seatingOption && (
-                <p className="error-text">Please Select a Seating Option</p>
-              )}
-            </div>
-            <div className="button-container">
-              <button
-                className="submit-button"
-                type="submit"
-                onClick={(e) => handleFormSubmit(e)}
-              >
-                Reserve Table
-              </button>
-            </div>
-          </section>
-          <aside>
-            <div className="reservation-images">
-              <img alt="Two chefs posing at the pizza oven" src={chefs} />
-            </div>
-            <div className="reservation-images">
-              <img alt="outside seating of restaurant" src={restaurant} />
-            </div>
-          </aside>
-        </div>
-      </section>
+            ))}
+            {error('seatingOption')}
+          </fieldset>
+          {Object.keys(errors).some((key) => errors[key]) && (
+            <p role="alert">
+              Please check the highlighted reservation details.
+            </p>
+          )}
+          <button className="button" type="submit">
+            Reserve Table <span aria-hidden="true">→</span>
+          </button>
+        </section>
+        <aside
+          className="booking-photos"
+          aria-label="A look inside Little Lemon"
+        >
+          <img alt="Two chefs at the pizza oven" src={chefs} />
+          <img alt="Outdoor seating at Little Lemon" src={restaurant} />
+          <p>
+            Good food. Good company.
+            <br />A little Mediterranean sunshine.
+          </p>
+        </aside>
+      </div>
     </form>
   )
 }
-
 export default BookingForm

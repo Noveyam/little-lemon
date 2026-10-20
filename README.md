@@ -1,68 +1,42 @@
-Little Lemon - Meta Frontend Submission
+# Little Lemon
 
-## Available Scripts
+A React restaurant demo adapted from an existing Little Lemon capstone project, with reservation validation, responsive layouts, accessible form feedback, and route tests. Refreshed in October 2026.
 
-In the project directory, you can run:
+![Little Lemon homepage](screenshots/homepage.jpg)
 
-### `npm start`
+## Run locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```sh
+npm ci
+PORT=3010 npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Open http://localhost:3010. The existing project uses React 18, React Router 6, and Create React App 5. The repair was verified with Node 18.12.1 / npm 8.19.2 already installed on this machine. This older toolchain is retained for compatibility; migration to supported Node and a maintained build tool remains future work.
 
-### `npm test`
+```sh
+npm test -- --watchAll=false --runInBand
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- Responsive home, menu, about, reservation, and confirmation views.
+- Date-dependent simulated availability, React reducer state, and controlled form inputs.
+- Validation for dates, available times, whole-number party sizes (1–12), occasions, and seating.
+- Labeled controls, associated validation messages, keyboard focus styles, skip link, and accessible mobile navigation.
+- Safe empty confirmation and unknown-route screens.
+- Unit and integration tests for validation, date changes, successful booking, rejected submission, and routes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Demo boundaries
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Availability and submission are local simulations in `src/api.js`. No booking is sent to a restaurant, no email is sent, and no account, payment, delivery service, or backend is connected. Reviews are sample content. A confirmation belongs to the current browser history entry and is not a durable reservation record. Legacy login and ordering URLs explain these limits rather than presenting nonfunctional forms.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Static hosting must rewrite application routes to `index.html` for direct links to work. Nothing has been deployed by this repair.
 
-### `npm run eject`
+## Project origin and attribution
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This version continues the existing [FRowe8/little-lemon](https://github.com/FRowe8/little-lemon) project inspired by the [Meta Front-End Developer Capstone](https://www.coursera.org/learn/meta-front-end-developer-capstone). It retains inherited components, Little Lemon branding, and supplied image assets. The repair and documentation were AI-assisted. This repository is an adaptation, not a claim of sole authorship of the original project or course assets.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Validation and limitations
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The repair passed 19 automated tests and a production build. A local mobile browser check verified navigation and completion of a simulated reservation. This is not a production booking system or a complete accessibility audit. Availability is deterministic sample data based on the day of month; bookings do not consume slots, and same-day times are not filtered against the current clock.

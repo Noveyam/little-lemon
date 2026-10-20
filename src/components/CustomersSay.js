@@ -1,4 +1,3 @@
-import './CustomersSay.css'
 import Billy from '../assets/Billy.jpg'
 import Gordon from '../assets/Gordon.jpg'
 import Sally from '../assets/Sally.jpg'
@@ -36,8 +35,9 @@ function CustomersSay() {
   return (
     <section className="testimony-section">
       <div className="testimony-heading">
-        <h2>Testimonials</h2>
+        <h2>Around our table</h2>
       </div>
+      <p className="sample-note">Sample reviews for this restaurant demo.</p>
       <div className="testimonies">
         {testimnonials.map((testimony) => {
           return (

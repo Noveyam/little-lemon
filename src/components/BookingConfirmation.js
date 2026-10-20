@@ -1,30 +1,46 @@
-import './BookingConfirmation.css'
-import { useLocation } from 'react-router-dom'
-import { Link } from 'react-router-dom'
-
-function BookingConfirmation(props) {
-  const location = useLocation()
-  const data = location.state
-
-  const dateFormatted = data.bookingDate.split('-')
-
+import { useLocation, Link } from 'react-router-dom'
+import { parseDate } from '../booking'
+function BookingConfirmation() {
+  const { state: data } = useLocation()
+  if (!data || !parseDate(data.bookingDate))
+    return (
+      <section className="message-page">
+        <h1>No reservation to display</h1>
+        <p>Start with the reservation form to create a demo booking.</p>
+        <Link className="button" to="/reservations">
+          Reserve a table
+        </Link>
+      </section>
+    )
+  const date = parseDate(data.bookingDate).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
   return (
-    <div className="booking-confirmation-section">
-      <h1>Thank you for your Booking!</h1>
+    <section className="message-page">
+      <p className="eyebrow">ALL SET</p>
+      <h1>Your demo reservation is confirmed.</h1>
+      <p className="demo-note">
+        This is a portfolio demo. No restaurant booking has been made.
+      </p>
       <h2>Booking Details</h2>
-      <div className="booking-details">
-        <h3>
-          We look forward to seeing {data.diners} of you on {dateFormatted[2]}/
-          {dateFormatted[1]}/{dateFormatted[0]} at {data.bookingTime}.
-        </h3>
-        <h3>You have requested {data.seatingOption} seating.</h3>
-        <h3>Call us on 0800 002211 if you need to make any changes.</h3>
-      </div>
-      <Link to="/" className="nav-link">
-        <button className="home-button">Return Home</button>
+      <dl className="booking-details">
+        <dt>Date</dt>
+        <dd>{date}</dd>
+        <dt>Time</dt>
+        <dd>{data.bookingTime}</dd>
+        <dt>Guests</dt>
+        <dd>{data.diners}</dd>
+        <dt>Seating</dt>
+        <dd>{data.seatingOption}</dd>
+        <dt>Occasion</dt>
+        <dd>{data.occasion}</dd>
+      </dl>
+      <Link className="button" to="/">
+        Return Home
       </Link>
-    </div>
+    </section>
   )
 }
-
 export default BookingConfirmation

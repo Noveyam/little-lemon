@@ -1,4 +1,3 @@
-import './Chicago.css'
 import restaurantImg from '../assets/restaurant.jpg'
 import chef from '../assets/restaurant chef B.jpg'
 
@@ -9,11 +8,10 @@ function Chicago() {
         <h2>Little Lemon</h2>
         <h3>Chicago</h3>
         <p>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint. Velit officia consequat duis enim velit mollit. Exercitation
-          veniam consequat sunt nostrud amet. Amet minim mollit non deserunt
-          ullamco est sit aliqua dolor do amet sint. Velit officia consequat
-          duis enim velit mollit.
+          At Little Lemon, the best moments happen around a table. Our menu
+          celebrates Mediterranean cooking with a Chicago twist: vibrant salads,
+          rustic bread, and something sweet to finish. Come for the food, stay
+          for the company.
         </p>
       </div>
       <div className="aboutus-image">

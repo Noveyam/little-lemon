@@ -1,63 +1,171 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import App from './App'
 import BookingForm from './components/BookingForm'
 import { initializeTimes, updateTimes } from './components/BookingPage'
+import { fetchAPI, submitAPI } from './api'
+import { localDate, parseDate, validateBooking } from './booking'
 
-import { fetchAPI } from './api'
+const futureDate = '2099-06-15'
+const times = fetchAPI(parseDate(futureDate))
+const validBooking = {
+  bookingDate: futureDate,
+  bookingTime: times[0],
+  diners: 4,
+  occasion: 'birthday',
+  seatingOption: 'outside',
+}
 
-test('Renders the BookingForm heading', () => {
-  render(<BookingForm />)
-  const headingElement = screen.getByText('Reservation Details')
-  expect(headingElement).toBeInTheDocument()
+function renderApp(path = '/') {
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <App />
+    </MemoryRouter>,
+  )
+}
+
+test('initializeTimes returns today’s simulated availability', () => {
+  expect(initializeTimes()).toEqual(fetchAPI(parseDate(localDate())))
 })
 
-describe('initializeTimes function', () => {
-  test('should initialize the availableTimes state to an array of available times', () => {
-    const initialState = fetchAPI(new Date())
-    expect(initialState).toEqual(initialState)
-  })
+test('date reducer refreshes availability and handles cleared dates', () => {
+  expect(
+    updateTimes([], { type: 'UPDATE_TIMES', payload: futureDate }),
+  ).toEqual(times)
+  expect(updateTimes(times, { type: 'UPDATE_TIMES', payload: '' })).toEqual([])
+  expect(updateTimes(times, { type: 'OTHER' })).toBe(times)
 })
 
-describe('updateTimes function', () => {
-  test('should update the availableTimes state to an array of available times', () => {
-    const initialState = fetchAPI(new Date())
-    const selectedDate = new Date('01/01/2022')
-    const expectedUpdatedTimes = fetchAPI(selectedDate)
-
-    const updatedTimes = updateTimes(initialState, {
-      type: 'UPDATE_TIMES',
-      payload: selectedDate,
-    })
-    expect(updatedTimes).toEqual(expectedUpdatedTimes)
-  })
+test('date formatting uses the local calendar and rejects impossible dates', () => {
+  expect(localDate(new Date(2026, 9, 19, 23, 30))).toBe('2026-10-19')
+  expect(parseDate('2026-02-30')).toBeNull()
+  expect(parseDate('')).toBeNull()
 })
 
-describe('Reserve a table form', () => {
-  test('Reservation is submitted if there are blank fields in the form', () => {
-    const submitForm = jest.fn()
-    const setFormOptions = jest.fn()
-    render(
-      <BookingForm updateFormOptions={setFormOptions} submitForm={submitForm} />
-    )
+test.each(['', '0', '13', '2.5', '-1'])(
+  'rejects invalid guest count %s',
+  (diners) => {
+    expect(
+      validateBooking({ ...validBooking, diners }, times).diners,
+    ).toBeTruthy()
+  },
+)
 
-    const dinersInput = screen.getByLabelText(/Number of Diners/)
-    fireEvent.change(dinersInput, { target: { value: 4 } })
+test('rejects past dates, unavailable times, and unsupported options', () => {
+  expect(
+    validateBooking({ ...validBooking, bookingDate: '2000-01-01' }, times)
+      .bookingDate,
+  ).toBeTruthy()
+  expect(
+    validateBooking({ ...validBooking, bookingTime: '02:00' }, times)
+      .bookingTime,
+  ).toBeTruthy()
+  expect(
+    validateBooking({ ...validBooking, occasion: 'invalid' }, times).occasion,
+  ).toBeTruthy()
+  expect(
+    validateBooking({ ...validBooking, seatingOption: 'invalid' }, times)
+      .seatingOption,
+  ).toBeTruthy()
+})
 
-    const submitButton = screen.getByRole('button')
-    fireEvent.click(submitButton)
+test('demo API validates submissions instead of always accepting them', () => {
+  expect(submitAPI(validBooking)).toBe(true)
+  expect(submitAPI({ ...validBooking, bookingTime: '02:00' })).toBe(false)
+  expect(submitAPI(null)).toBe(false)
+})
 
-    expect(submitForm).toHaveBeenCalled()
+test('empty form shows associated errors and does not submit', () => {
+  const submit = jest.fn()
+  render(<BookingForm availableTimes={times} submitForm={submit} />)
+  fireEvent.click(screen.getByRole('button', { name: /Reserve Table/ }))
+  expect(submit).not.toHaveBeenCalled()
+  expect(screen.getByLabelText('Time')).toHaveAttribute('aria-invalid', 'true')
+  expect(screen.getByLabelText('Number of Diners')).toHaveAccessibleDescription(
+    'Enter a whole number from 1 to 12.',
+  )
+  expect(screen.getByRole('alert')).toBeInTheDocument()
+})
+
+test('changing date clears the previously selected time', () => {
+  const dispatch = jest.fn()
+  const submit = jest.fn()
+  render(
+    <BookingForm
+      availableTimes={times}
+      dispatch={dispatch}
+      submitForm={submit}
+    />,
+  )
+  fireEvent.change(screen.getByLabelText('Time'), {
+    target: { value: times[0] },
   })
-
-  test('Reservation is not submitted if there are blank fields in the form', () => {
-    const submitForm = jest.fn()
-    const setFormOptions = jest.fn()
-    render(
-      <BookingForm updateFormOptions={setFormOptions} submitForm={submitForm} />
-    )
-
-    const submitButton = screen.getByRole('button')
-    fireEvent.click(submitButton)
-
-    expect(submitForm).not.toHaveBeenCalled()
+  fireEvent.change(screen.getByLabelText('Date'), {
+    target: { value: futureDate },
   })
+  expect(dispatch).toHaveBeenCalledWith({
+    type: 'UPDATE_TIMES',
+    payload: futureDate,
+  })
+  expect(screen.getByLabelText('Time')).toHaveValue('')
+})
+
+test('complete reservation navigates with correct occasion and seating', () => {
+  renderApp('/reservations')
+  fireEvent.change(screen.getByLabelText('Date'), {
+    target: { value: futureDate },
+  })
+  fireEvent.change(screen.getByLabelText('Time'), {
+    target: { value: times[0] },
+  })
+  fireEvent.change(screen.getByLabelText('Number of Diners'), {
+    target: { value: '4' },
+  })
+  fireEvent.change(screen.getByLabelText('Occasion'), {
+    target: { value: 'birthday' },
+  })
+  fireEvent.click(screen.getByLabelText('Outside'))
+  fireEvent.submit(screen.getByRole('form', { name: 'Reservation Details' }))
+  expect(
+    screen.getByRole('heading', {
+      name: 'Your demo reservation is confirmed.',
+    }),
+  ).toBeInTheDocument()
+  expect(screen.getByText('June 15, 2099')).toBeInTheDocument()
+  expect(screen.getByText('birthday', { exact: true })).toBeInTheDocument()
+  expect(screen.getByText('outside', { exact: true })).toBeInTheDocument()
+})
+
+test('empty availability displays a useful message and cannot submit', () => {
+  const submit = jest.fn()
+  render(<BookingForm submitForm={submit} />)
+  expect(screen.getByRole('status')).toHaveTextContent('No times available')
+  fireEvent.submit(screen.getByRole('form'))
+  expect(submit).not.toHaveBeenCalled()
+})
+
+test.each([
+  ['/reservation-confirmation', 'No reservation to display'],
+  ['/missing', 'Page not found'],
+  ['/login', 'No account needed.'],
+  ['/order_online', 'A taste of Little Lemon'],
+])('direct route %s renders safely', (path, heading) => {
+  renderApp(path)
+  expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument()
+})
+
+test('mobile navigation reports its state and closes after route selection', () => {
+  renderApp()
+  const toggle = screen.getByRole('button', { name: 'Toggle navigation' })
+  fireEvent.click(toggle)
+  expect(toggle).toHaveAttribute('aria-expanded', 'true')
+  fireEvent.click(
+    screen
+      .getByRole('navigation', { name: 'Main navigation' })
+      .querySelector('a[href="/reservations"]'),
+  )
+  expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  expect(
+    screen.getByRole('heading', { name: 'Make yourself at home.' }),
+  ).toBeInTheDocument()
 })

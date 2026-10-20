@@ -1,4 +1,3 @@
-import './CallToAction.css'
 import food from '../assets/restauranfood.jpg'
 import { Link } from 'react-router-dom'
 
@@ -9,11 +8,11 @@ function CallToAction() {
         <h1>Little Lemon</h1>
         <h2>Chicago</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          We’re a family-owned Mediterranean restaurant, bringing fresh seasonal
+          ingredients and a warm welcome to the heart of Chicago.
         </p>
-        <Link to="/reservations" className="nav-link">
-          <button>Reserve a Table</button>
+        <Link to="/reservations" className="button">
+          Reserve a Table <span aria-hidden="true">↗</span>
         </Link>
       </div>
       <div className="callToAction-image">

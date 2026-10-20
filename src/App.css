@@ -1,38 +1,568 @@
-.App {
-  text-align: center;
+:root {
+  --green: #495e57;
+  --ink: #263b32;
+  --yellow: #f4ce14;
+  --paper: #faf9f5;
+  --muted: #5d6862;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1,
+h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  line-height: 1.12;
+}
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+}
+h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #946000;
+  outline-offset: 4px;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+.button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 1.5rem;
+  min-height: 48px;
+  padding: 0.85rem 1.5rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #24372e;
+  font-weight: 700;
+  text-decoration: none;
+  width: fit-content;
+}
+.button:hover {
+  background: #e6bf08;
+}
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 20;
+  background: white;
+  padding: 1rem;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+.header-layout {
+  border-bottom: 1px solid #dce2da;
+  background: white;
+}
+.navigation {
+  max-width: 1160px;
+  padding: 1rem 2rem;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  gap: 2rem;
+}
+.brand-logo {
+  width: 185px;
+  height: 52px;
+  object-fit: contain;
+}
+.navigation-menu ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+.nav-link {
+  display: inline-block;
+  padding: 0.6rem 0;
+  text-decoration: none;
+  font-weight: 600;
+}
+.nav-link.active {
+  border-bottom: 2px solid var(--green);
+}
+.hamburger {
+  display: none;
+  background: none;
+  border: 1px solid #cbd2cd;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  padding: 0.3rem 0.8rem;
+}
+.callToAction-section {
+  background: var(--green);
   color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  padding: 4rem max(2rem, calc((100vw - 1096px) / 2));
 }
-
-.App-link {
-  color: #61dafb;
+.callToAction-heading h1 {
+  color: var(--yellow);
+  margin-bottom: 0.3rem;
+  white-space: nowrap;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.callToAction-heading h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.callToAction-heading p {
+  max-width: 390px;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+.callToAction-image img {
+  width: 100%;
+  height: 370px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.specials-section,
+.testimony-section,
+.aboutus-section,
+.booking-section,
+.message-page {
+  max-width: 1160px;
+  margin: auto;
+  padding: 4rem 2rem;
+}
+.specials-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.specials-heading h2 {
+  margin-bottom: 0;
+}
+.specials {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.specials-container {
+  border: 1px solid #dce2da;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.specials-image img {
+  width: 100%;
+  height: 205px;
+  object-fit: cover;
+}
+.specials-title {
+  padding: 1.3rem 1.3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.specials-title h3 {
+  font-family: Georgia, serif;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.specials-title p {
+  color: #875033;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.specials-description {
+  padding: 0 1.3rem;
+  color: var(--muted);
+}
+.specials-link {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding: 0 1.3rem 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.testimony-section {
+  background: #eef0e9;
+  border-radius: 14px;
+}
+.testimony-heading,
+.sample-note {
+  text-align: center;
+}
+.sample-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.testimonies {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.testimony-container {
+  background: white;
+  padding: 1.4rem;
+  border-radius: 10px;
+}
+.testimony-container h3 {
+  font-size: 0.85rem;
+  color: #6d5422;
+}
+.testimony-image {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 600;
+}
+.testimony-image img {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.testimpony-description {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.aboutus-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+}
+.aboutus-heading p {
+  max-width: 450px;
+  color: var(--muted);
+}
+.aboutus-heading h2 {
+  margin-bottom: 0.6rem;
+}
+.aboutus-heading h3 {
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+.aboutus-image {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.aboutus-image img {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.aboutus-image-bottom {
+  padding-top: 2rem;
+}
+.doormat-nav {
+  display: grid;
+  grid-template-columns: 70px 2fr 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  background: var(--ink);
+  color: white;
+  padding: 3rem max(2rem, calc((100vw - 1096px) / 2));
+}
+.footer-logo {
+  width: 60px;
+  background: white;
+  border-radius: 4px;
+}
+.doormat-nav h2 {
+  font-size: 1.7rem;
+  margin-bottom: 0.6rem;
+}
+.doormat-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.doormat-nav li {
+  margin-bottom: 0.5rem;
+}
+.footer-note {
+  font-size: 0.8rem;
+  color: #d1dad4;
+}
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #6e6440;
+}
+.booking-section > h1 {
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  margin-bottom: 1rem;
+}
+.demo-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+.reservation-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.reservation-fields {
+  border: 1px solid #dce2da;
+  background: white;
+  border-radius: 14px;
+  padding: 2rem;
+}
+.reservation-fields h2 {
+  font-size: 1.8rem;
+}
+.reservation-fields > div {
+  margin-bottom: 1.2rem;
+}
+.reservation-fields label,
+legend {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.reservation-fields input:not([type='radio']),
+.reservation-fields select {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 1px solid #9aa8a0;
+  background: white;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+.reservation-fields [aria-invalid='true'] {
+  border-color: #a02121 !important;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+.reservation-fields .radio-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  min-height: 44px;
+  font-weight: 400;
+}
+input[type='radio'] {
+  accent-color: var(--green);
+  width: 20px;
+  height: 20px;
+}
+.error-text,
+[role='alert'] {
+  color: #a02121;
+  font-size: 0.9rem;
+  margin: 0.4rem 0;
+}
+.booking-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-content: start;
+}
+.booking-photos img {
+  height: 360px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.booking-photos img:nth-child(2) {
+  margin-top: 3rem;
+}
+.booking-photos p {
+  grid-column: 1 / -1;
+  font:
+    1.8rem/1.4 Georgia,
+    serif;
+  margin-top: 1rem;
+}
+.message-page {
+  min-height: 55vh;
+  max-width: 850px;
+}
+.message-page h1 {
+  font-size: 3rem;
+}
+.booking-details {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0.7rem 1rem;
+  margin: 2rem 0;
+}
+.booking-details dt {
+  font-weight: 700;
+}
+.booking-details dd {
+  margin: 0;
+  text-transform: capitalize;
+}
+@media (max-width: 900px) {
+  .navigation-menu ul {
+    gap: 1.2rem;
   }
-  to {
-    transform: rotate(360deg);
+  .callToAction-section {
+    gap: 2rem;
+  }
+  .callToAction-heading h1 {
+    white-space: normal;
+  }
+  .testimonies {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .reservation-section {
+    gap: 1.5rem;
+  }
+  .booking-photos {
+    grid-template-columns: 1fr;
+  }
+  .booking-photos img {
+    height: 230px;
+  }
+  .booking-photos img:nth-child(2) {
+    margin-top: 0;
+  }
+  .doormat-nav {
+    grid-template-columns: 60px 1fr 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .navigation {
+    padding: 0.7rem 1.25rem;
+  }
+  .brand-logo {
+    width: 160px;
+  }
+  .hamburger {
+    display: block;
+  }
+  .navigation-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid #dce2da;
+    padding: 0.5rem 1.25rem 1rem;
+    box-shadow: 0 10px 12px #263b3210;
+  }
+  .navigation-menu.expanded {
+    display: block;
+  }
+  .navigation-menu ul {
+    display: block;
+  }
+  .nav-link {
+    width: 100%;
+    padding: 0.8rem 0;
+  }
+  .callToAction-section {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 1.25rem;
+  }
+  .callToAction-image img {
+    height: 260px;
+  }
+  .specials-section,
+  .testimony-section,
+  .aboutus-section,
+  .booking-section,
+  .message-page {
+    padding: 2.5rem 1.25rem;
+  }
+  .specials-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .specials,
+  .aboutus-section,
+  .reservation-section {
+    grid-template-columns: 1fr;
+  }
+  .specials-image img {
+    height: 220px;
+  }
+  .aboutus-section {
+    gap: 1rem;
+  }
+  .aboutus-image img {
+    height: 220px;
+  }
+  .reservation-fields {
+    padding: 1.25rem;
+  }
+  .booking-photos {
+    grid-template-columns: 1fr 1fr;
+  }
+  .booking-photos img {
+    height: 210px;
+  }
+  .doormat-nav {
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+    padding: 2rem 1.25rem;
+  }
+  .testimonies {
+    grid-template-columns: 1fr;
+  }
+  .message-page h1 {
+    font-size: 2.3rem;
   }
 }
