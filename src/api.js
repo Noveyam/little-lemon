@@ -1,4 +1,5 @@
 import { localDate, parseDate, validateBooking } from './booking'
+import { readBookings, saveBooking } from './bookingStorage'
 // Deterministic local simulation supplied by the course. No network requests.
 const seededRandom = (seed) => {
   const m = 2 ** 35 - 31
@@ -13,14 +14,18 @@ export function fetchAPI(date) {
     if (random() < 0.5) result.push(`${hour}:00`)
     if (random() < 0.5) result.push(`${hour}:30`)
   }
-  return result
+  const bookedTimes = readBookings()
+    .filter((booking) => booking.bookingDate === localDate(date))
+    .map((booking) => booking.bookingTime)
+  return result.filter((time) => !bookedTimes.includes(time))
 }
 export function submitAPI(data) {
   if (!data) return false
   const date = parseDate(data.bookingDate)
-  return Boolean(
-    date &&
-      Object.keys(validateBooking(data, fetchAPI(date), localDate())).length ===
-        0,
+  if (
+    !date ||
+    Object.keys(validateBooking(data, fetchAPI(date), localDate())).length
   )
+    return false
+  return saveBooking({ ...data, diners: Number(data.diners) })
 }

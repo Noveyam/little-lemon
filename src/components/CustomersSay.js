@@ -35,7 +35,7 @@ function CustomersSay() {
   return (
     <section className="testimony-section">
       <div className="testimony-heading">
-        <h2>Around our table</h2>
+        <h2>Testimonials</h2>
       </div>
       <p className="sample-note">Sample reviews for this restaurant demo.</p>
       <div className="testimonies">

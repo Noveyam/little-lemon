@@ -27,11 +27,20 @@ export function validateBooking(data, availableTimes, today = localDate()) {
     errors.occasion = 'Choose an occasion.'
   if (!['standard', 'outside'].includes(data.seatingOption))
     errors.seatingOption = 'Choose a seating option.'
-  if (!data.firstName?.trim() || data.firstName.trim().length > 80)
+  if (
+    typeof data.firstName !== 'string' ||
+    !data.firstName.trim() ||
+    data.firstName.trim().length > 80
+  )
     errors.firstName = 'Enter your first name (up to 80 characters).'
-  if (!data.lastName?.trim() || data.lastName.trim().length > 80)
+  if (
+    typeof data.lastName !== 'string' ||
+    !data.lastName.trim() ||
+    data.lastName.trim().length > 80
+  )
     errors.lastName = 'Enter your last name (up to 80 characters).'
   if (
+    typeof data.email !== 'string' ||
     !data.email ||
     data.email.trim().length > 254 ||
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())

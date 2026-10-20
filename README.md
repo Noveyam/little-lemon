@@ -22,6 +22,8 @@ npm run build
 
 - Responsive home, menu, about, reservation, and confirmation views.
 - Date-dependent simulated availability, React reducer state, and controlled form inputs.
+- Shared available/booked slot list and browser-local reservation receipts.
+- Refresh-safe confirmation and a reset button to clear demo bookings.
 - Validation for dates, available times, whole-number party sizes (1–12), occasions, and seating.
 - Labeled controls, associated validation messages, keyboard focus styles, skip link, and accessible mobile navigation.
 - Safe empty confirmation and unknown-route screens.
@@ -29,7 +31,7 @@ npm run build
 
 ## Demo boundaries
 
-Availability and submission are local simulations in `src/api.js`. No booking is sent to a restaurant, no email is sent, and no account, payment, delivery service, or backend is connected. Reviews are sample content. A confirmation belongs to the current browser history entry and is not a durable reservation record. Legacy login and ordering URLs explain these limits rather than presenting nonfunctional forms.
+Availability and submission are local simulations in `src/api.js`. No booking is sent to a restaurant, no email is sent, and no account, payment, delivery service, or backend is connected. Reviews are sample content. Reservation receipts are saved in localStorage for this browser and origin. Names and email addresses are validated but are not saved in localStorage or navigation state. Confirmation survives reloads; Reset demo bookings clears the saved receipts. Clearing browser data also removes them. Legacy login and ordering URLs explain these limits rather than presenting nonfunctional forms.
 
 Static hosting must rewrite application routes to `index.html` for direct links to work. Nothing has been deployed by this repair.
 
@@ -39,10 +41,14 @@ This version continues the existing [FRowe8/little-lemon](https://github.com/FRo
 
 ## Validation and limitations
 
-The repair passed 30 automated tests and a production build. A local mobile browser check verified navigation and completion of a simulated reservation. This is not a production booking system or a complete accessibility audit. Availability is deterministic sample data based on the day of month; bookings do not consume slots, and same-day times are not filtered against the current clock.
+The repair passed 36 automated tests and a production build. A local mobile browser check verified navigation and completion of a simulated reservation. This is not a production booking system or a complete accessibility audit. Availability is deterministic sample data based on the day of month; saved demo bookings consume a time in this browser only. Availability is not shared across devices, simultaneous-tab writes are not atomic, and same-day times are not filtered against the current clock.
 
 ## Course alignment review
 
-Reviewed against the signed-in Meta capstone assessment and solution guide in October 2026. The app includes the booking fields, customer first/last name and email, required-field feedback, confirmation, parent-managed availability, and form tests. It also supplies semantic page structure, responsive styles, and Open Graph metadata. The live Capstone Wireframe was reviewed: homepage section order and the six navigation destinations match. The occasion options match the Capstone Components examples. Typography, spacing, footer details, and the native dropdown styling differ; this is not a pixel-for-pixel reproduction.
+Reviewed against the signed-in Meta capstone assessment and solution guide in October 2026. The app includes the booking fields, customer first/last name and email, required-field feedback, confirmation, parent-managed availability, and form tests. It also supplies semantic page structure, responsive styles, and Open Graph metadata. The live Capstone Wireframe was reviewed: homepage section order and the six navigation destinations match. The occasion options match the Capstone Components examples. The Specials and Testimonials headings and overlapping about photos also follow the wireframe. Typography, spacing, footer details, and the native dropdown styling still differ; this is not a pixel-for-pixel reproduction.
 
-The implementation uses one reservation form instead of separate booking/customer-detail screens, and `BookingPage` owns availability rather than a component named `Main`. The course-style API functions are bundled locally instead of loaded from an external script. Browser-storage persistence is not implemented. Customer details remain in the browser's current navigation state; use fictional details for this demo.
+The implementation uses one reservation form instead of separate booking/customer-detail screens, and `BookingPage` owns availability rather than a component named `Main`. The course-style API functions are bundled locally instead of loaded from an external script. Browser persistence and a separate BookingSlot list are implemented. The saved receipt contains a generated ID, date, time, guest count, occasion, and seating choice. Navigation passes only the ID; confirmation reads the saved receipt. Use fictional customer details for the form.
+
+## Reservation preview
+
+![Booking times and reservation form](screenshots/reservations.jpg)

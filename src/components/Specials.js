@@ -31,9 +31,9 @@ function Specials() {
   return (
     <section className="specials-section">
       <div className="specials-heading">
-        <h2>This week’s favorites</h2>
+        <h2>Specials</h2>
         <Link className="button" to="/menu">
-          Explore the menu ↗
+          Online Menu ↗
         </Link>
       </div>
       <div className="specials">

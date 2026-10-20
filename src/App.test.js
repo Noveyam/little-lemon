@@ -5,6 +5,14 @@ import BookingForm from './components/BookingForm'
 import { initializeTimes, updateTimes } from './components/BookingPage'
 import { fetchAPI, submitAPI } from './api'
 import { localDate, parseDate, validateBooking } from './booking'
+import { STORAGE_KEY, readBookings, saveBooking } from './bookingStorage'
+
+beforeEach(() => {
+  window.localStorage.clear()
+})
+afterEach(() => {
+  jest.restoreAllMocks()
+})
 
 const futureDate = '2099-06-15'
 const times = fetchAPI(parseDate(futureDate))
@@ -210,4 +218,97 @@ test('customer details are required and errors are associated with fields', () =
   expect(screen.getByLabelText('Email (required)')).toHaveAccessibleDescription(
     /Enter a valid email address/,
   )
+})
+
+test('saving a demo booking persists only its receipt and consumes its slot', () => {
+  expect(submitAPI(validBooking)).toBe(true)
+  const [receipt] = readBookings()
+  expect(receipt).toMatchObject({
+    bookingDate: futureDate,
+    bookingTime: times[0],
+    diners: 4,
+  })
+  expect(receipt).not.toHaveProperty('firstName')
+  expect(receipt).not.toHaveProperty('lastName')
+  expect(receipt).not.toHaveProperty('email')
+  expect(window.localStorage.getItem(STORAGE_KEY)).not.toContain(
+    'alex@example.com',
+  )
+  expect(fetchAPI(parseDate(futureDate))).not.toContain(times[0])
+  expect(submitAPI(validBooking)).toBe(false)
+  expect(readBookings()).toHaveLength(1)
+})
+
+test('confirmation survives a new app render and reset releases the slot', () => {
+  expect(submitAPI(validBooking)).toBe(true)
+  renderApp('/reservation-confirmation')
+  expect(
+    screen.getByRole('heading', {
+      name: 'Your demo reservation is confirmed.',
+    }),
+  ).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Reset demo bookings' }))
+  expect(
+    screen.getByRole('heading', { name: 'Make yourself at home.' }),
+  ).toBeInTheDocument()
+  expect(readBookings()).toEqual([])
+  expect(fetchAPI(parseDate(futureDate))).toContain(times[0])
+})
+
+test('slot list and select share the same date-dependent state', () => {
+  expect(submitAPI(validBooking)).toBe(true)
+  renderApp('/reservations')
+  fireEvent.change(screen.getByLabelText('Date'), {
+    target: { value: futureDate },
+  })
+  expect(
+    screen.getByText('Booked in this browser', { exact: true }),
+  ).toBeInTheDocument()
+  const selectValues = Array.from(
+    screen.getByLabelText('Time').options,
+    (option) => option.value,
+  )
+  expect(selectValues).not.toContain(times[0])
+  expect(selectValues).toContain(times[1])
+})
+
+test('corrupt or malformed stored data cannot crash the app', () => {
+  window.localStorage.setItem(STORAGE_KEY, '{broken')
+  expect(readBookings()).toEqual([])
+  window.localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify([
+      { bookingDate: 'not-a-date' },
+      null,
+      { id: 'x', bookingDate: futureDate },
+    ]),
+  )
+  expect(readBookings()).toEqual([])
+  renderApp('/reservation-confirmation')
+  expect(
+    screen.getByRole('heading', { name: 'No reservation to display' }),
+  ).toBeInTheDocument()
+})
+
+test('storage failure does not report a successful booking', () => {
+  jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    throw new Error('Storage unavailable')
+  })
+  expect(submitAPI(validBooking)).toBe(false)
+  expect(readBookings()).toEqual([])
+})
+
+test('another tab booking refreshes the visible availability', () => {
+  renderApp('/reservations')
+  fireEvent.change(screen.getByLabelText('Date'), {
+    target: { value: futureDate },
+  })
+  expect(saveBooking(validBooking)).toBe(true)
+  fireEvent(window, new StorageEvent('storage', { key: STORAGE_KEY }))
+  expect(
+    screen.getByText('Booked in this browser', { exact: true }),
+  ).toBeInTheDocument()
+  expect(
+    Array.from(screen.getByLabelText('Time').options, (option) => option.value),
+  ).not.toContain(times[0])
 })
