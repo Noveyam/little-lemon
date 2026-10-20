@@ -4,6 +4,10 @@ A React restaurant demo adapted from an existing Little Lemon capstone project, 
 
 ![Little Lemon homepage](screenshots/homepage.jpg)
 
+## Figma designs
+
+See [design references and Figma shortcuts](design/README.md) for the capstone wireframe, prototype, and components.
+
 ## Run locally
 
 Use **Node 24** (24.15 or newer within the 24.x series). `.nvmrc` pins the verified version, 24.19.0. Node 18 is no longer supported by this project's tooling. If you use nvm, run `nvm install` and `nvm use` in this folder first.
