@@ -1,3 +1,4 @@
+import { beforeEach, afterEach, test, expect, vi } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
@@ -11,7 +12,7 @@ beforeEach(() => {
   window.localStorage.clear()
 })
 afterEach(() => {
-  jest.restoreAllMocks()
+  vi.restoreAllMocks()
 })
 
 const futureDate = '2099-06-15'
@@ -87,7 +88,7 @@ test('demo API validates submissions instead of always accepting them', () => {
 })
 
 test('empty form shows associated errors and does not submit', () => {
-  const submit = jest.fn()
+  const submit = vi.fn()
   render(<BookingForm availableTimes={times} submitForm={submit} />)
   fireEvent.click(screen.getByRole('button', { name: /Reserve Table/ }))
   expect(submit).not.toHaveBeenCalled()
@@ -99,8 +100,8 @@ test('empty form shows associated errors and does not submit', () => {
 })
 
 test('changing date clears the previously selected time', () => {
-  const dispatch = jest.fn()
-  const submit = jest.fn()
+  const dispatch = vi.fn()
+  const submit = vi.fn()
   render(
     <BookingForm
       availableTimes={times}
@@ -157,7 +158,7 @@ test('complete reservation navigates with correct occasion and seating', () => {
 })
 
 test('empty availability displays a useful message and cannot submit', () => {
-  const submit = jest.fn()
+  const submit = vi.fn()
   render(<BookingForm submitForm={submit} />)
   expect(screen.getByRole('status')).toHaveTextContent('No times available')
   fireEvent.submit(screen.getByRole('form'))
@@ -291,7 +292,7 @@ test('corrupt or malformed stored data cannot crash the app', () => {
 })
 
 test('storage failure does not report a successful booking', () => {
-  jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
     throw new Error('Storage unavailable')
   })
   expect(submitAPI(validBooking)).toBe(false)
