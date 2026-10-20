@@ -6,6 +6,8 @@ export const navigation = [
   ['/about', 'About'],
   ['/menu', 'Menu'],
   ['/reservations', 'Reservations'],
+  ['/order_online', 'Order Online'],
+  ['/login', 'Login'],
 ]
 function Nav() {
   const [expanded, setExpanded] = useState(false)
