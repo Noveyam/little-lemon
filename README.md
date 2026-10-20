@@ -25,7 +25,7 @@ npm run build
 - Validation for dates, available times, whole-number party sizes (1–12), occasions, and seating.
 - Labeled controls, associated validation messages, keyboard focus styles, skip link, and accessible mobile navigation.
 - Safe empty confirmation and unknown-route screens.
-- Unit and integration tests for validation, date changes, successful booking, rejected submission, and routes.
+- Unit and integration tests for validation, customer details, date changes, successful booking, rejected submission, and routes.
 
 ## Demo boundaries
 
@@ -39,4 +39,10 @@ This version continues the existing [FRowe8/little-lemon](https://github.com/FRo
 
 ## Validation and limitations
 
-The repair passed 19 automated tests and a production build. A local mobile browser check verified navigation and completion of a simulated reservation. This is not a production booking system or a complete accessibility audit. Availability is deterministic sample data based on the day of month; bookings do not consume slots, and same-day times are not filtered against the current clock.
+The repair passed 30 automated tests and a production build. A local mobile browser check verified navigation and completion of a simulated reservation. This is not a production booking system or a complete accessibility audit. Availability is deterministic sample data based on the day of month; bookings do not consume slots, and same-day times are not filtered against the current clock.
+
+## Course alignment review
+
+Reviewed against the signed-in Meta capstone assessment and solution guide in October 2026. The app includes the booking fields, customer first/last name and email, required-field feedback, confirmation, parent-managed availability, and form tests. It also supplies semantic page structure, responsive styles, and Open Graph metadata. Exact visual agreement with the original Figma wireframe/mockup has not been established.
+
+The implementation uses one reservation form instead of separate booking/customer-detail screens, and `BookingPage` owns availability rather than a component named `Main`. The course-style API functions are bundled locally instead of loaded from an external script. Browser-storage persistence is not implemented. Customer details remain in the browser's current navigation state; use fictional details for this demo.

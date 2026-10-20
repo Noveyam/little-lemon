@@ -14,6 +14,9 @@ function BookingForm({
     diners: '',
     occasion: 'none',
     seatingOption: 'standard',
+    firstName: '',
+    lastName: '',
+    email: '',
   })
   const [errors, setErrors] = useState({})
   const change = (event) => {
@@ -42,7 +45,13 @@ function BookingForm({
     const nextErrors = validateBooking(inputs, availableTimes)
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length === 0)
-      submitForm({ ...inputs, diners: Number(inputs.diners) })
+      submitForm({
+        ...inputs,
+        diners: Number(inputs.diners),
+        firstName: inputs.firstName.trim(),
+        lastName: inputs.lastName.trim(),
+        email: inputs.email.trim(),
+      })
   }
   return (
     <form
@@ -57,6 +66,9 @@ function BookingForm({
           aria-labelledby="booking-heading"
         >
           <h2 id="booking-heading">Reservation Details</h2>
+          <p className="form-hint">
+            Date, time, number of diners, and your details are required.
+          </p>
           <div>
             <label htmlFor="bookingDate">Date</label>
             <input
@@ -143,6 +155,39 @@ function BookingForm({
               </label>
             ))}
             {error('seatingOption')}
+          </fieldset>
+          <fieldset className="customer-details">
+            <legend>Your details</legend>
+            <p className="form-hint" id="demo-details-note">
+              Use made-up details to try this demo. No email will be sent.
+            </p>
+            {[
+              ['firstName', 'First name', 'text', 'Alex'],
+              ['lastName', 'Last name', 'text', 'Rivera'],
+              ['email', 'Email', 'email', 'alex@example.com'],
+            ].map(([name, label, type, placeholder]) => (
+              <div key={name}>
+                <label htmlFor={name}>{label} (required)</label>
+                <input
+                  id={name}
+                  name={name}
+                  type={type}
+                  required
+                  maxLength={name === 'email' ? 254 : 80}
+                  autoComplete="off"
+                  placeholder={placeholder}
+                  value={inputs[name]}
+                  onChange={change}
+                  {...accessibility(name)}
+                  aria-describedby={
+                    errors[name]
+                      ? `demo-details-note ${name}-error`
+                      : 'demo-details-note'
+                  }
+                />
+                {error(name)}
+              </div>
+            ))}
           </fieldset>
           {Object.keys(errors).some((key) => errors[key]) && (
             <p role="alert">

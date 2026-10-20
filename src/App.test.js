@@ -14,6 +14,9 @@ const validBooking = {
   diners: 4,
   occasion: 'birthday',
   seatingOption: 'outside',
+  firstName: 'Alex',
+  lastName: 'Rivera',
+  email: 'alex@example.com',
 }
 
 function renderApp(path = '/') {
@@ -124,6 +127,15 @@ test('complete reservation navigates with correct occasion and seating', () => {
   fireEvent.change(screen.getByLabelText('Occasion'), {
     target: { value: 'birthday' },
   })
+  fireEvent.change(screen.getByLabelText('First name (required)'), {
+    target: { value: 'Alex' },
+  })
+  fireEvent.change(screen.getByLabelText('Last name (required)'), {
+    target: { value: 'Rivera' },
+  })
+  fireEvent.change(screen.getByLabelText('Email (required)'), {
+    target: { value: 'alex@example.com' },
+  })
   fireEvent.click(screen.getByLabelText('Outside'))
   fireEvent.submit(screen.getByRole('form', { name: 'Reservation Details' }))
   expect(
@@ -168,4 +180,34 @@ test('mobile navigation reports its state and closes after route selection', () 
   expect(
     screen.getByRole('heading', { name: 'Make yourself at home.' }),
   ).toBeInTheDocument()
+})
+
+test.each([
+  ['firstName', ''],
+  ['firstName', '   '],
+  ['firstName', 'a'.repeat(81)],
+  ['lastName', ''],
+  ['lastName', '   '],
+  ['lastName', 'a'.repeat(81)],
+  ['email', ''],
+  ['email', 'invalid'],
+  ['email', 'a@'],
+  ['email', 'a b@example.com'],
+])('rejects missing or invalid customer detail %s', (field, value) => {
+  expect(
+    validateBooking({ ...validBooking, [field]: value }, times)[field],
+  ).toBeTruthy()
+})
+
+test('customer details are required and errors are associated with fields', () => {
+  render(<BookingForm availableTimes={times} />)
+  fireEvent.submit(screen.getByRole('form'))
+  expect(screen.getByLabelText('First name (required)')).toBeRequired()
+  expect(screen.getByLabelText('Last name (required)')).toHaveAttribute(
+    'aria-invalid',
+    'true',
+  )
+  expect(screen.getByLabelText('Email (required)')).toHaveAccessibleDescription(
+    /Enter a valid email address/,
+  )
 })

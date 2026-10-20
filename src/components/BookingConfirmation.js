@@ -24,6 +24,12 @@ function BookingConfirmation() {
       <p className="demo-note">
         This is a portfolio demo. No restaurant booking has been made.
       </p>
+      {data.firstName && (
+        <p>
+          Thank you, {data.firstName}. Your details were used only for this
+          demo; no confirmation email was sent.
+        </p>
+      )}
       <h2>Booking Details</h2>
       <dl className="booking-details">
         <dt>Date</dt>
