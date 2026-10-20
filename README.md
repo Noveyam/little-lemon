@@ -6,7 +6,7 @@ A React restaurant demo adapted from an existing Little Lemon capstone project, 
 
 ## Figma designs
 
-See [design references and Figma shortcuts](design/README.md) for the capstone wireframe, prototype, and components.
+[Download the Figma designs (.zip)](https://github.com/Noveyam/little-lemon/raw/refs/heads/main/design/exports/little-lemon-figma.zip), or see [individual .fig downloads and original Figma links](design/README.md) for the capstone wireframe, prototype, and components.
 
 ## Run locally
 
